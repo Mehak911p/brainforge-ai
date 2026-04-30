@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<body style="background:black;color:white;text-align:center;font-family:sans-serif">
+
+<h2>BrainForge AI</h2>
+
+<div id="chat"></div>
+
+<input id="msg" placeholder="Type..." />
+<button onclick="send()">Send</button>
+
+<script>
+function send(){
+ let m=document.getElementById("msg").value;
+ document.getElementById("chat").innerHTML+="<p>You: "+m+"</p>";
+ fetch("/api/test")
+ .then(r=>r.json())
+ .then(d=>{
+  document.getElementById("chat").innerHTML+="<p>AI: "+d.message+"</p>";
+ });
+}
+</script>
+
+</body>
+</html>
