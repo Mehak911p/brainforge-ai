@@ -1,28 +1,27 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
+from openai import OpenAI
 
 app = Flask(__name__)
+client = OpenAI()
 
 @app.route("/")
 def home():
-    return """
-    <h2>BrainForge AI</h2>
-    <input id='msg' placeholder='Ask something'>
-    <button onclick='send()'>Send</button>
-    <p id='res'></p>
+    return render_template("index.html")
 
-    <script>
-    async function send(){
-        let msg = document.getElementById('msg').value;
-        let res = await fetch('/chat', {
-            method:'POST',
-            headers:{'Content-Type':'application/json'},
-            body: JSON.stringify({message: msg})
-        });
-        let data = await res.json();
-        document.getElementById('res').innerText = data.reply;
-    }
-    </script>
-    """
+@app.route("/chat", methods=["POST"])
+def chat():
+    data = request.get_json()
+    user_msg = data.get("message")
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "user", "content": user_msg}
+        ]
+    )
+
+    reply = response.choices[0].message.content
+    return jsonify({"reply": reply})
 
 @app.route("/chat", methods=["POST"])
 def chat():
