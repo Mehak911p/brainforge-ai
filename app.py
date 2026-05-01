@@ -23,8 +23,6 @@ def chat():
     reply = response.choices[0].message.content
     return jsonify({"reply": reply})
 
-@app.route("/chat", methods=["POST"])
-def chat():
     user_msg = request.json.get("message")
 
     # TEMP reply (no API yet)
