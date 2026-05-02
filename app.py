@@ -16,13 +16,15 @@ def chat():
 
     try:
         response = client.responses.create(
-    model="gpt-4o-mini",
-    input=user_msg
-)
+            model="gpt-4o-mini",
+            input=user_msg
+        )
+        reply = response.output_text
 
-reply = response.output_text
+    except Exception as e:
+        reply = "Error: " + str(e)
 
-        return jsonify({"reply": reply})
+    return jsonify({"reply": reply})
 
     except Exception as e:
         return jsonify({"reply": "Error: " + str(e)})
