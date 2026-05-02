@@ -15,15 +15,12 @@ def chat():
     user_msg = request.json.get("message")
 
     try:
-        response = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {"role": "system", "content": "You are a helpful AI assistant."},
-                {"role": "user", "content": user_msg}
-            ]
-        )
+        response = client.responses.create(
+    model="gpt-4o-mini",
+    input=user_msg
+)
 
-        reply = response.choices[0].message.content
+reply = response.output_text
 
         return jsonify({"reply": reply})
 
